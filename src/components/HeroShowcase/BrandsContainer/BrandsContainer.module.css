@@ -1,0 +1,92 @@
+/* BrandsContainer.module.css */
+.brandsContainer {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 100px 0;
+  transform: translate3d(0, 0, 0);
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  padding: 40px 0;
+}
+
+.brandsContainer::before,
+.brandsContainer::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.brandsContainer::before {
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+.brandsContainer::after {
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+  background-size: 400px 400px, 300px 300px;
+  background-position: 200px 300px, 150px 150px;
+  animation: twinkle 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.brandsInner {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  will-change: transform;
+  position: relative;
+  z-index: 2;
+  padding: 0 40px;
+}
+
+.brandContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+.brandText {
+  font-size: 40px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.elevenLab {
+  margin-right: 120px;
+}
+
+.webgl {
+  margin-left: 50px;
+  margin-right: -15px;
+}
+
+.unity {
+  margin: 0 -26px;
+}

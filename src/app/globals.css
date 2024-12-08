@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", "Red Hat Display", Arial, Helvetica,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body > * {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+header {
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+main {
+  padding: 2rem 0 0 0;
+}
+
+nextjs-portal {
+  display: none !important;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/fonts/Plus_Jakarta_Sans/static/PlusJakartaSans-Bold.ttf")
+    format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* @font-face {
+  font-family: 'Red Hat Display';
+  src: url('/fonts/Red_Hat_Display/static/RedHatDisplay-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url('/fonts/Red_Hat_Display/static/RedHatDisplay-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+} */
+
+@media (max-width: 768px) {
+  body > * {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  header,
+  footer {
+    padding: 1rem;
+  }
+
+  main {
+    padding: 1.5rem 0 0 0;
+  }
+}

@@ -1,0 +1,379 @@
+.howItWorks {
+  color: #ffffffe9;
+  padding: 11rem 0;
+  border-radius: 8px;
+  width: 85%;
+  max-width: 1950px;
+  margin: -2rem auto;
+  display: flex;
+  font-size: 0.9rem;
+  letter-spacing: 0.7px;
+  align-items: flex-start;
+}
+
+.col {
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+}
+
+.colQuestions {
+  min-height: 840px;
+  padding-top: 0;
+}
+
+.title {
+  font-size: 36px;
+  line-height: 52px;
+  letter-spacing: -1.8px;
+  font-weight: 200;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #a1a1ab;
+  margin-bottom: 3rem;
+  font-weight: 200;
+  margin-top: 20px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step {
+  padding: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.step:hover {
+  background-color: #333;
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stepNumber {
+  margin-right: 1rem;
+  color: #71717b;
+  font-weight: 200;
+  font-size: 25px;
+}
+
+.stepTitle {
+  flex-grow: 1;
+  font-size: 35px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.expandIcon {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.stepContent {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.step.active .stepContent {
+  max-height: 1000px;
+}
+
+.stepDescription {
+  margin-top: 1rem;
+  color: #ccc;
+}
+
+.mobileImageContainer {
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.mobileImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-width: 100%;
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.step.active .mobileImage {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.carousel {
+  position: relative;
+  padding: 2px;
+  max-width: 480px;
+  height: 680px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 3rem auto 0;
+  display: flex;
+  background: transparent;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  background: transparent;
+}
+
+.imageWrapper {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+  align-items: center;
+}
+
+.imageContainer {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  position: absolute;
+  z-index: 2;
+  border-radius: 20px;
+  object-position: center;
+  transform: scale(0.9);
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+}
+
+.imageContainer:nth-child(n+2) .image {
+  transform: scale(0.75);
+  padding: 25px;
+}
+
+.bullets {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #555;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.activeBullet {
+  background-color: #fff;
+}
+
+.rotateDown {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.rotateUp {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.gradient {
+  background: linear-gradient(to right, #8B5CF6, #D946EF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hidden images for preloading */
+.preloadImages {
+  display: none;
+}
+
+.hiddenImage {
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0;
+}
+
+/* Media Queries */
+
+@media (max-width: 1400px) {
+  .howItWorks {
+    gap: 1.5rem;
+  }
+
+  .carousel {
+    width: 450px;
+    height: 645px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+  }
+
+  .stepTitle {
+    font-size: 32px;
+  }
+
+  .stepNumber {
+    font-size: 22px;
+  }
+
+  .colQuestions {
+    min-height: 820px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .howItWorks {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    aspect-ratio: 3/4;
+  }
+
+  .col {
+    width: 100%;
+    padding: 0;
+  }
+
+  .steps {
+    width: 100%;
+  }
+
+  .stepTitle {
+    font-size: 28px;
+  }
+
+  .stepNumber {
+    font-size: 20px;
+  }
+
+  .colQuestions {
+    min-height: 640px;
+  }
+
+  .stepContent {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out;
+  }
+}
+
+@media (max-width: 1000px) {
+  .howItWorks {
+    width: 100%;
+    padding: 12rem 1rem;
+  }
+
+  .carousel {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .stepTitle {
+    font-size: 24px;
+  }
+
+  .stepNumber {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    display: none;
+  }
+
+  .howItWorks {
+    flex-direction: column;
+    padding: 8rem 1rem;
+  }
+
+  .colQuestions {
+    min-height: auto;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .stepTitle {
+    font-size: 20px;
+  }
+
+  .stepNumber {
+    font-size: 16px;
+  }
+
+  .stepDescription {
+    font-size: 14px;
+  }
+
+  .bullet {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Ensure the image fits within the container */
+  .mobileImage {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .stepContent {
+    transition: max-height 0.5s ease-in-out;
+  }
+
+  .imageContainer:nth-child(n+2) .image {
+    transform: scale(0.7);
+    padding: 30px;
+  }
+}

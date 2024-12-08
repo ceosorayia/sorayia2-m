@@ -1,0 +1,27 @@
+.bigEllipse {
+  width: 2009px;
+  height: 1213px;
+  flex-shrink: 0;
+  border-radius: 2009px;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(119, 96, 249, 0.45) 0%,
+    rgba(75, 57, 147, 0) 100%
+  );
+  filter: blur(90px);
+  position: absolute;
+  opacity: 0.8;
+
+  top: -770px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .bigEllipse {
+    width: 1305.85px;
+    height: 788.45px;
+  }
+}

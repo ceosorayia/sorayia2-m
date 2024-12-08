@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  background: #1a1a1a;
+  margin-top: -32px;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 980px) {
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content {
+    flex: 1;
+    padding: 0rem;
+    margin-top: 30px;
+  }
+}
