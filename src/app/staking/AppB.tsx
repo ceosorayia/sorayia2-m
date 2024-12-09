@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Coins } from 'lucide-react';
+<<<<<<< HEAD
 import StakingCard from './components/StakingCard';
+=======
+import { StakingDashboard } from './components/StakingDashboard';
+import { Navigation } from './components/Navigation';
+>>>>>>> 82c9acb (Description des modifications)
 
 function App() {
   const [connected, setConnected] = useState(false);
@@ -13,17 +18,37 @@ function App() {
       
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="text-center mb-12">
+<<<<<<< HEAD
           <div className="flex items-center justify-center gap-3 mb-6">
+=======
+          {/* <div className="flex items-center justify-center gap-3 mb-6">
+>>>>>>> 82c9acb (Description des modifications)
             <Coins className="w-16 h-16 text-yellow-400" />
             <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-purple-400 to-blue-400">
               $SRA Staking
             </h1>
+<<<<<<< HEAD
           </div>
           <p className="text-xl text-blue-200">Stake your tokens and earn rewards</p>
         </div>
 
         <div className="mt-8">
           {connected && <StakingCard />}
+=======
+          </div> */}
+          <p className="text-xl text-blue-200">Stake your tokens and earn rewards</p>
+        </div>
+
+        <Navigation 
+          connected={connected} 
+          setConnected={setConnected}
+          currentView={view}
+          onViewChange={setView}
+        />
+
+        <div className="mt-8">
+          {connected && <StakingDashboard />}
+>>>>>>> 82c9acb (Description des modifications)
         </div>
       </div>
     </div>

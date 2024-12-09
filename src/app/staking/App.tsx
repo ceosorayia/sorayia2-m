@@ -54,4 +54,7 @@ const App: React.FC = () => {
 }
 
 export default App;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 82c9acb (Description des modifications)

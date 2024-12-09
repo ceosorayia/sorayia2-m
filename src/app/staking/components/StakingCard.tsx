@@ -93,13 +93,130 @@ const StakingCard: React.FC<StakingCardProps> = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  // Check if enough allowance is given
+  const checkAndApproveToken = async (amount: BigNumber): Promise<boolean> => {
+    try {
+      if (!tokenContract || !account) return false;
+      
+      const currentAllowance = await tokenContract.allowance(account, STAKING_ADDRESS);
+      if (currentAllowance.lt(amount)) {
+        const approveTx = await tokenContract.approve(STAKING_ADDRESS, ethers.constants.MaxUint256);
+        await approveTx.wait();
+        return true;
+      }
+      return true;
+    } catch (error) {
+      console.error('Approval error:', error);
+      throw new Error('Failed to approve tokens');
+    }
+  };
+
+  // Fetch user rewards
+  const fetchUserRewards = async () => {
+    if (!active || !stakingContract || !account) return;
+    
+    try {
+      const pendingRewards = await stakingContract.calculatePendingRewards(account);
+      setPendingRewards(ethers.utils.formatUnits(pendingRewards, TOKEN_DECIMALS));
+    } catch (error) {
+      console.error("Error fetching pending rewards:", error);
+    }
+  };
+
+  // Fetch total staked amount
+  const fetchTotalStaked = async () => {
+    if (!stakingContract) return;
+    try {
+      const total = await stakingContract.totalStaked();
+      const formatted = ethers.utils.formatUnits(total, TOKEN_DECIMALS);
+      setTotalStakedAmount(formatted);
+    } catch (error) {
+      console.error('Error fetching total staked:', error);
+    }
+  };
+
+  // Main data fetching effect
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!active || !account || !tokenContract || !stakingContract) return;
+
+      try {
+        const [
+          balance,
+          currentAllowance,
+          minStake,
+          maxStake,
+          lockPeriodValue,
+          userStake
+        ] = await Promise.all([
+          tokenContract.balanceOf(account),
+          tokenContract.allowance(account, STAKING_ADDRESS),
+          stakingContract.minStakeAmount(),
+          stakingContract.maxStakeAmount(),
+          stakingContract.lockPeriod(),
+          stakingContract.getUserStake(account)
+        ]);
+
+        setTokenBalance(ethers.utils.formatUnits(balance, TOKEN_DECIMALS));
+        setStakedAmount(ethers.utils.formatUnits(userStake.stakedAmount, TOKEN_DECIMALS));
+        setLockEndTime(userStake.lockEndTime.toNumber());
+        setAllowance(ethers.utils.formatUnits(currentAllowance, TOKEN_DECIMALS));
+        setMinStakeAmount(ethers.utils.formatUnits(minStake, TOKEN_DECIMALS));
+        setMaxStakeAmount(ethers.utils.formatUnits(maxStake, TOKEN_DECIMALS));
+        setLockPeriod(lockPeriodValue.toNumber());
+
+        // Fetch total staked amount
+        await fetchTotalStaked();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    // Update data every 5 seconds
+    const dataInterval = setInterval(fetchData, 5000);
+    return () => clearInterval(dataInterval);
+  }, [active, account, tokenContract, stakingContract]);
+
+  // More frequent updates for pending rewards
+  useEffect(() => {
+    if (!active || !stakingContract || !account) return;
+
+    fetchUserRewards();
+    // Update rewards every second for more accurate display
+    const rewardsInterval = setInterval(fetchUserRewards, 1000);
+    return () => clearInterval(rewardsInterval);
+  }, [active, stakingContract, account]);
+
+  // After successful transactions, refresh all data
+  const refreshAllData = async () => {
+    try {
+      await Promise.all([
+        fetchUserRewards(),
+        fetchTotalStaked()
+      ]);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+  };
+
+>>>>>>> 82c9acb (Description des modifications)
   // Main actions
   const stake = async (): Promise<void> => {
     try {
       setError("");
+<<<<<<< HEAD
       if (!active || !account) throw new Error('Wallet not connected');
       if (!stakingContract) throw new Error('Contract not initialized');
       if (!library) throw new Error('Library not initialized');
+=======
+      if (!active || !account) throw new Error('Please connect your wallet');
+      if (!stakingContract) throw new Error('Contract not initialized');
+      if (!library) throw new Error('Library not initialized');
+      if (!stakeAmount || stakeAmount === '0') throw new Error('Please enter a valid amount');
+>>>>>>> 82c9acb (Description des modifications)
       
       // Security: Network validation
       const isCorrectNetwork = await validateNetwork(library, EXPECTED_CHAIN_ID);
@@ -108,21 +225,49 @@ const StakingCard: React.FC<StakingCardProps> = () => {
       // Security: Rate limiting
       checkTransactionThrottle(account, 'stake');
       
+<<<<<<< HEAD
       validateStakeAmount();
       setIsStaking(true);
 
       const amount = ethers.utils.parseUnits(stakeAmount, TOKEN_DECIMALS);
       
+=======
+      // Amount validation
+      if (!isValidAmount(stakeAmount, tokenBalance, minStakeAmount, maxStakeAmount)) {
+        throw new Error(`Amount must be between ${minStakeAmount} and ${maxStakeAmount}`);
+      }
+
+      setIsStaking(true);
+      
+      // Parse amount with proper decimals
+      const amount = ethers.utils.parseUnits(stakeAmount, TOKEN_DECIMALS);
+      
+      // Check and approve if needed
+      await checkAndApproveToken(amount);
+      
+>>>>>>> 82c9acb (Description des modifications)
       // Security: Transaction parameter validation
       const tx = await stakingContract.stake(amount);
       await validateTransaction(tx);
       
       await tx.wait();
+<<<<<<< HEAD
       setStakeAmount("");
       // Refresh balances...
     } catch (error: any) {
       console.error('Staking error:', error);
       setError(error.message || 'Error staking tokens');
+=======
+      
+      // Clear input and refresh data
+      setStakeAmount("");
+      
+      // Refresh all data after staking
+      await refreshAllData();
+    } catch (error: any) {
+      console.error('Staking error:', error);
+      setError(error.message || 'Failed to stake tokens. Please try again.');
+>>>>>>> 82c9acb (Description des modifications)
     } finally {
       setIsStaking(false);
     }
@@ -131,6 +276,7 @@ const StakingCard: React.FC<StakingCardProps> = () => {
   const withdraw = async (): Promise<void> => {
     try {
       setError("");
+<<<<<<< HEAD
       if (!active || !account) throw new Error('Wallet not connected');
       if (!stakingContract) throw new Error('Contract not initialized');
       if (!library) throw new Error('Library not initialized');
@@ -157,6 +303,31 @@ const StakingCard: React.FC<StakingCardProps> = () => {
     } catch (error: any) {
       console.error('Withdrawal error:', error);
       setError(error.message || 'Error withdrawing tokens');
+=======
+      setIsWithdrawing(true);
+
+      if (!stakingContract || !withdrawAmount) {
+        throw new Error("Please enter an amount to withdraw");
+      }
+
+      // Convert the withdraw amount to the correct format with decimals
+      const amount = ethers.utils.parseUnits(withdrawAmount, TOKEN_DECIMALS);
+      
+      // Call the withdraw function on the contract
+      const tx = await stakingContract.withdraw(amount);
+      await tx.wait();
+
+      // Clear input and refresh data
+      setWithdrawAmount("");
+      await Promise.all([
+        fetchUserRewards(),
+        fetchTotalStaked()
+      ]);
+
+    } catch (error: any) {
+      console.error('Withdraw error:', error);
+      setError(error.message || 'Failed to withdraw tokens');
+>>>>>>> 82c9acb (Description des modifications)
     } finally {
       setIsWithdrawing(false);
     }
@@ -165,7 +336,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
   const handleClaim = async (): Promise<void> => {
     try {
       setError("");
+<<<<<<< HEAD
       if (!active || !account) throw new Error('Wallet not connected');
+=======
+      if (!active || !account) throw new Error('Please connect your wallet');
+>>>>>>> 82c9acb (Description des modifications)
       if (!stakingContract) throw new Error('Contract not initialized');
       if (!library) throw new Error('Library not initialized');
       
@@ -184,6 +359,7 @@ const StakingCard: React.FC<StakingCardProps> = () => {
       
       await tx.wait();
       
+<<<<<<< HEAD
       // Refresh rewards data
       const userStake = await stakingContract.getUserStake(account);
       setPendingRewards(formatAmount(userStake.pendingRewards));
@@ -191,6 +367,13 @@ const StakingCard: React.FC<StakingCardProps> = () => {
     } catch (error: any) {
       console.error('Claim error:', error);
       setError(error.message || 'Error claiming rewards');
+=======
+      // Refresh all data after claiming
+      await refreshAllData();
+    } catch (error: any) {
+      console.error('Claim error:', error);
+      setError(error.message || 'Failed to claim rewards');
+>>>>>>> 82c9acb (Description des modifications)
     } finally {
       setIsClaiming(false);
     }
@@ -206,7 +389,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
       );
       await tx.wait();
       const newAllowance = await tokenContract.allowance(account, STAKING_ADDRESS);
+<<<<<<< HEAD
       setAllowance(formatAmount(newAllowance));
+=======
+      setAllowance(ethers.utils.formatUnits(newAllowance, TOKEN_DECIMALS));
+>>>>>>> 82c9acb (Description des modifications)
     } catch (error) {
       console.error("Approval failed:", error);
     }
@@ -215,6 +402,7 @@ const StakingCard: React.FC<StakingCardProps> = () => {
 
   const needsApproval = parseFloat(allowance) === 0 || parseFloat(allowance) < parseFloat(stakeAmount || "0");
 
+<<<<<<< HEAD
   // Utility functions
   const formatAmount = (amount: BigNumber | string): string => {
     try {
@@ -222,14 +410,27 @@ const StakingCard: React.FC<StakingCardProps> = () => {
       return ethers.utils.formatUnits(amount.toString(), TOKEN_DECIMALS);
     } catch (error) {
       console.error("Error formatting amount:", error);
+=======
+  // Utility function to format numbers with proper decimals
+  const formatDisplayNumber = (value: string): string => {
+    try {
+      const num = parseFloat(value);
+      if (isNaN(num)) return "0.0000";
+      return num.toFixed(4);
+    } catch {
+>>>>>>> 82c9acb (Description des modifications)
       return "0.0000";
     }
   };
 
+<<<<<<< HEAD
   const parseAmount = (amount: string): BigNumber => {
     return ethers.utils.parseUnits(amount.toString(), TOKEN_DECIMALS);
   };
 
+=======
+  // Utility functions
+>>>>>>> 82c9acb (Description des modifications)
   const formatTimeLeft = (endTime: number): string => {
     if (!endTime) return "No lock";
     const now = Math.floor(Date.now() / 1000);
@@ -259,6 +460,7 @@ const StakingCard: React.FC<StakingCardProps> = () => {
     };
   };
 
+<<<<<<< HEAD
   // Effects
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -331,6 +533,8 @@ const StakingCard: React.FC<StakingCardProps> = () => {
     return () => clearInterval(interval);
   }, [active, stakingContract, account]);
 
+=======
+>>>>>>> 82c9acb (Description des modifications)
   useEffect(() => {
     if (!lockEndTime) return;
 
@@ -353,7 +557,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
         <div className="text-center">
           <h3 className="text-2xl font-bold text-white mb-2">Total Value Locked</h3>
           <div className="flex items-center justify-center gap-2">
+<<<<<<< HEAD
             <span className="text-3xl font-bold text-white">{formatAmount(totalStakedAmount)}</span>
+=======
+            <span className="text-3xl font-bold text-white">{formatDisplayNumber(totalStakedAmount)}</span>
+>>>>>>> 82c9acb (Description des modifications)
             <span className="text-lg text-gray-400">SORAYIA</span>
           </div>
         </div>
@@ -386,7 +594,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
         <div className="bg-gray-700/50 rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-1">Your Balance</p>
           <div className="flex items-end gap-2">
+<<<<<<< HEAD
             <span className="text-2xl font-bold text-white">{parseFloat(tokenBalance).toFixed(4)}</span>
+=======
+            <span className="text-2xl font-bold text-white">{formatDisplayNumber(tokenBalance)}</span>
+>>>>>>> 82c9acb (Description des modifications)
             <span className="text-sm text-gray-400">SORAYIA</span>
           </div>
         </div>
@@ -395,7 +607,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
         <div className="bg-gray-700/50 rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-2">Stake SORAYIA</p>
           <p className="text-xs text-gray-500 mb-2">
+<<<<<<< HEAD
             Min: {parseFloat(minStakeAmount).toFixed(2)} | Max: {parseFloat(maxStakeAmount).toFixed(2)}
+=======
+            Min: {formatDisplayNumber(minStakeAmount)} | Max: {formatDisplayNumber(maxStakeAmount)}
+>>>>>>> 82c9acb (Description des modifications)
           </p>
           <div className="flex gap-2 mb-2">
             <input
@@ -435,7 +651,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
         <div className="bg-gray-700/50 rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-1">Total Staked</p>
           <div className="flex items-end gap-2">
+<<<<<<< HEAD
             <span className="text-2xl font-bold text-white">{formatAmount(stakedAmount)}</span>
+=======
+            <span className="text-2xl font-bold text-white">{formatDisplayNumber(stakedAmount)}</span>
+>>>>>>> 82c9acb (Description des modifications)
           </div>
         </div>
         
@@ -447,6 +667,7 @@ const StakingCard: React.FC<StakingCardProps> = () => {
               type="number"
               placeholder="Amount to withdraw"
               className="flex-1 bg-gray-800 rounded px-3 py-2 text-white"
+<<<<<<< HEAD
               value={withdrawAmount}
               onChange={handleWithdrawAmountChange}
               min="0"
@@ -455,6 +676,16 @@ const StakingCard: React.FC<StakingCardProps> = () => {
             <button
               className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
               disabled={!active || isWithdrawing || !withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(formatAmount(stakedAmount))}
+=======
+              min="0"
+              step="0.0001"
+              value={withdrawAmount}
+              onChange={(e) => setWithdrawAmount(e.target.value)}
+            />
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
+              disabled={!active || isWithdrawing || !withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(formatDisplayNumber(stakedAmount))}
+>>>>>>> 82c9acb (Description des modifications)
               onClick={withdraw}
             >
               {isWithdrawing ? 'Withdrawing...' : 'Withdraw'}
@@ -466,7 +697,11 @@ const StakingCard: React.FC<StakingCardProps> = () => {
         <div className="bg-gray-700/50 rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-1">Pending Rewards</p>
           <div className="flex items-end gap-2 mb-3">
+<<<<<<< HEAD
             <span className="text-2xl font-bold text-white">{formatAmount(pendingRewards)}</span>
+=======
+            <span className="text-2xl font-bold text-white">{formatDisplayNumber(pendingRewards)}</span>
+>>>>>>> 82c9acb (Description des modifications)
             <span className="text-sm text-gray-400">SORAYIA</span>
           </div>
           <button

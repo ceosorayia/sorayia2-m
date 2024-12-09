@@ -21,7 +21,11 @@ body {
     sans-serif;
   font-size: 16px;
   line-height: 1.6;
+<<<<<<< HEAD
   background-color: #000;
+=======
+  background-color: #000 !important;
+>>>>>>> 82c9acb (Description des modifications)
   color: #fff;
   position: relative;
   overflow-x: hidden;
@@ -91,6 +95,13 @@ nextjs-portal {
   font-style: normal;
 } */
 
+<<<<<<< HEAD
+=======
+.bg-gradient-to-b {
+  background: #000 !important;
+}
+
+>>>>>>> 82c9acb (Description des modifications)
 @media (max-width: 768px) {
   body > * {
     max-width: 100%;

@@ -182,6 +182,10 @@
 
   .heroImageContainerMobile {
     display: block;
+<<<<<<< HEAD
+=======
+    margin-top: 60px;
+>>>>>>> 82c9acb (Description des modifications)
   }
 
   .smallEllipse {
@@ -223,7 +227,11 @@
   }
 
   .heroImageContainerMobile {
+<<<<<<< HEAD
     transform: scale(1);
+=======
+    transform: scale(1.3);
+>>>>>>> 82c9acb (Description des modifications)
   }
 
   .header {

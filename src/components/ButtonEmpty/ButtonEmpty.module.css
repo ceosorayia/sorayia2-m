@@ -1,7 +1,12 @@
 .button {
   background-color: transparent;
+<<<<<<< HEAD
   border: 1px solid #5f2196;
   color: #5f2196;
+=======
+  border: 1px solid #952df0;
+  color: #952df0;
+>>>>>>> 82c9acb (Description des modifications)
   width: 125px;
   height: 55px;
   font-weight: 600;

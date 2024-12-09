@@ -18,16 +18,36 @@ export const isValidAmount = (
   max: string | BigNumber
 ): boolean => {
   try {
+<<<<<<< HEAD
     const parsedAmount = ethers.utils.parseUnits(amount.toString());
     const parsedBalance = ethers.BigNumber.from(balance);
     const parsedMin = ethers.BigNumber.from(min);
     const parsedMax = ethers.BigNumber.from(max);
+=======
+    if (!amount || amount === '') return false;
+    
+    // Convert all inputs to BigNumber using parseUnits for proper decimal handling
+    const parsedAmount = ethers.utils.parseUnits(amount.toString(), 18);
+    const parsedBalance = typeof balance === 'string' 
+      ? ethers.utils.parseUnits(balance, 18)
+      : balance;
+    const parsedMin = typeof min === 'string'
+      ? ethers.utils.parseUnits(min, 18)
+      : min;
+    const parsedMax = typeof max === 'string'
+      ? ethers.utils.parseUnits(max, 18)
+      : max;
+>>>>>>> 82c9acb (Description des modifications)
 
     return parsedAmount.gt(0) && 
            parsedAmount.lte(parsedBalance) && 
            parsedAmount.gte(parsedMin) && 
            parsedAmount.lte(parsedMax);
   } catch (error) {
+<<<<<<< HEAD
+=======
+    console.error('Amount validation error:', error);
+>>>>>>> 82c9acb (Description des modifications)
     return false;
   }
 };
